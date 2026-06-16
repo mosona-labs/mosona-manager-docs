@@ -1,17 +1,23 @@
 # Quickstart
 
-Get Mosona Manager running with Docker Compose.
+At present, we only support deployment via Docker Compose.
 
 ## Prerequisites
 
 - Docker and Docker Compose
 - A host with ports available for the Hub, Postgres, and InfluxDB
 
+## Clone and Configure
+
+```bash
+git clone https://github.com/mosona-labs/mosona-manager.git
+cd mosona-manager/deploy
+cp .env.example .env
+```
+
 ## Deploy with Compose
 
 ```bash
-cd deploy
-cp .env.example .env
 docker compose up -d
 ```
 

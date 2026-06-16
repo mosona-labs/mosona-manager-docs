@@ -1,9 +1,10 @@
 import { useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
+import { DocsSidebarNav } from '@/components/docs/docs-sidebar-nav';
 import { DocsToc } from '@/components/docs/docs-toc';
 import { MarkdownDoc } from '@/components/docs/markdown-doc';
-import { docNav, getDocBySlug } from '@/lib/docs';
+import { docNav, docNavSections, getDocBySlug } from '@/lib/docs';
 import { cn } from '@/lib/utils';
 
 export function DocsPage() {
@@ -36,25 +37,9 @@ export function DocsPage() {
         <div className='mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:py-12'>
             <div className='grid gap-10 lg:grid-cols-[220px_minmax(0,1fr)_200px]'>
                 <aside className='hidden lg:block'>
-                    <nav aria-label='Documentation' className='sticky top-20 text-sm'>
-                        <p className='mb-3 font-medium'>Docs</p>
-                        <ul className='space-y-1'>
-                            {docNav.map((item) => (
-                                <li key={item.href}>
-                                    <Link
-                                        to={item.href}
-                                        className={cn(
-                                            'block rounded-md px-2 py-1.5 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground',
-                                            item.slug === doc.slug &&
-                                                'bg-muted font-medium text-foreground'
-                                        )}
-                                    >
-                                        {item.title}
-                                    </Link>
-                                </li>
-                            ))}
-                        </ul>
-                    </nav>
+                    <div className='sticky top-20'>
+                        <DocsSidebarNav sections={docNavSections} activeSlug={doc.slug} />
+                    </div>
                 </aside>
 
                 <div className='min-w-0'>

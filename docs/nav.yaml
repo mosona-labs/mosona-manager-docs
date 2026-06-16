@@ -1,0 +1,8 @@
+sections:
+  - title: Introduction
+    items:
+      - index
+      - quickstart
+  - title: Operations
+    items:
+      - connection-modes

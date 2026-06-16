@@ -1,7 +1,6 @@
-import { useState } from 'react';
-
 import { X, ZoomIn } from 'lucide-react';
 import { Dialog } from 'radix-ui';
+import { useState } from 'react';
 
 import { cn } from '@/lib/utils';
 

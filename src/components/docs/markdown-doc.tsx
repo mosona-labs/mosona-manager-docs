@@ -52,7 +52,7 @@ const components: Components = {
         <h2
             id={id}
             {...props}
-            className='mt-10 mb-2 scroll-mt-24 font-semibold text-xl tracking-tight first:mt-0'
+            className='mt-8 mb-3 scroll-mt-24 font-semibold text-xl tracking-tight first:mt-0'
         >
             {children}
         </h2>
@@ -73,7 +73,7 @@ const components: Components = {
     ol: ({ children }) => (
         <ol className='mb-4 list-decimal space-y-2 pl-6 text-muted-foreground'>{children}</ol>
     ),
-    li: ({ children }) => <li className='leading-7'>{children}</li>,
+    li: ({ children }) => <li className='leading-5'>{children}</li>,
     a: ({ href, children }) => {
         const resolved = resolveDocHref(href);
         const className =
