@@ -1,6 +1,7 @@
 /// <reference types="vite/client" />
 
 interface ImportMetaEnv {
+    /** Canonical site origin, e.g. https://manager.mosona.cc (no trailing slash) */
     readonly VITE_SITE_URL?: string;
 }
 

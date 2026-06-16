@@ -1,23 +1,33 @@
-import { useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
 import { DocsSidebarNav } from '@/components/docs/docs-sidebar-nav';
 import { DocsToc } from '@/components/docs/docs-toc';
 import { MarkdownDoc } from '@/components/docs/markdown-doc';
+import { usePageSeo } from '@/hooks/use-page-seo';
 import { docNav, docNavSections, getDocBySlug } from '@/lib/docs';
+import { SEO } from '@/lib/seo';
 import { cn } from '@/lib/utils';
 
 export function DocsPage() {
     const { slug } = useParams();
     const docSlug = slug ?? '';
     const doc = getDocBySlug(docSlug);
+    const docPath = docSlug === '' ? '/docs' : `/docs/${docSlug}`;
 
-    useEffect(() => {
-        if (!doc) {
-            return;
-        }
-        document.title = `${doc.title} · Mosona Manager`;
-    }, [doc]);
+    usePageSeo(
+        doc
+            ? {
+                  title: SEO.titleTemplate(doc.title),
+                  description: `${doc.title} — Mosona Manager documentation.`,
+                  path: docPath,
+              }
+            : {
+                  title: SEO.titleTemplate('Not found'),
+                  description: SEO.description,
+                  path: docPath,
+                  noindex: true,
+              }
+    );
 
     if (!doc) {
         return (

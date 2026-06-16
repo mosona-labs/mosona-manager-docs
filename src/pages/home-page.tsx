@@ -1,15 +1,18 @@
 import { ArrowRight } from 'lucide-react';
-import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 import IntroductionCard from '@/components/introduction-card';
 import { Button } from '@/components/ui/button';
+import { usePageSeo } from '@/hooks/use-page-seo';
+import { SEO } from '@/lib/seo';
 import { screenshots, site, techStack } from '@/lib/site-content';
 
 export function HomePage() {
-    useEffect(() => {
-        document.title = 'Mosona Manager - Server Monitor';
-    }, []);
+    usePageSeo({
+        title: SEO.defaultTitle,
+        description: SEO.description,
+        path: '/',
+    });
 
     return (
         <div>

@@ -22,7 +22,7 @@ export const screenshots = [
     },
     {
         title: 'Monitor',
-        description: 'Real-time / period charts from InfluxDB metrics.',
+        description: 'Real-time and periodic charts from InfluxDB metrics.',
         src: 'https://github.com/user-attachments/assets/c586f397-a4e9-4fd1-a0ab-f753ed4bfe8b',
     },
     {
