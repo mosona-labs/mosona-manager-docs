@@ -67,6 +67,15 @@ curl -fsS http://localhost:8080/health || true
 
 Adjust the port if your Hub listens elsewhere.
 
+## Finish
+
+The official version only directly exposes the server's HTTP port. If you want to expose an accessible HTTPS domain name to the internet, you can try the following approaches:
+
+- Use Cloudflare Tunnel to expose the Hub to the internet. Cloudflare Tunnel will automatically provide you with an accessible HTTPS domain name.
+- Deploy a reverse proxy with TLS termination (such as Nginx, Caddy, or Traefik) in front of the Hub, and forward HTTPS requests to the Hub's HTTP port.
+
+The reason we do not directly provide Caddy or Traefik images is that their configurations are relatively complex, and everyone's requirements are different. Some projects enforce a specific reverse proxy configuration and do not offer a convenient way to modify it, which actually increases the difficulty for users. We want users to be able to choose the reverse proxy that best fits their needs, while also providing enough flexibility for them to configure it as desired.
+
 ## Upgrade
 
 To upgrade, simply pull the latest image and restart the containers:
