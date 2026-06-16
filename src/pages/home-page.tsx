@@ -1,13 +1,19 @@
 import { ArrowRight } from 'lucide-react';
+import { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
+import IntroductionCard from '@/components/introduction-card';
 import { Button } from '@/components/ui/button';
 import { screenshots, site, techStack } from '@/lib/site-content';
 
 export function HomePage() {
+    useEffect(() => {
+        document.title = 'Mosona Manager - Server Monitor';
+    }, []);
+
     return (
         <div>
-            <section className='relative overflow-hidden border-b border-border'>
+            <section className='relative overflow-hidden border-border'>
                 <div className='absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_-20%,oklch(0.55_0.12_250/0.18),transparent)]' />
                 <div className='relative mx-auto grid max-w-6xl gap-10 px-4 py-16 sm:px-6 lg:grid-cols-2 lg:items-center lg:py-24'>
                     <div className='max-w-xl'>
@@ -15,10 +21,12 @@ export function HomePage() {
                             Server monitor · SSH · Agents
                         </p>
                         <h1 className='mb-4 font-semibold text-4xl tracking-tight sm:text-5xl'>
-                            <span className='text-green-600 dark:text-green-400'>Mosona</span> Manager
+                            <span className='text-green-600 dark:text-green-400'>Mosona</span>{' '}
+                            Manager
                         </h1>
                         <p className='mb-4 text-lg leading-relaxed text-muted-foreground'>
-                            Team-oriented / Personal server monitor and terminal management with project permissions and Agent & SSH remote control.
+                            Team-oriented / Personal server monitor and terminal management with
+                            project permissions and Agent & SSH remote control.
                         </p>
                         <ul className='mb-4 flex flex-wrap gap-2'>
                             {techStack.map((item) => (
@@ -45,7 +53,7 @@ export function HomePage() {
                         </div>
                     </div>
                     <div className='relative'>
-                        <div className='overflow-hidden rounded-sm shadow-2xl shadow-black/10 dark:shadow-black/40'>
+                        <div className='overflow-hidden rounded-sm shadow-lg shadow-black/10 dark:shadow-black/40'>
                             <img
                                 src={screenshots[0].src}
                                 alt={`Home`}
@@ -57,7 +65,27 @@ export function HomePage() {
                 </div>
             </section>
 
-            
+            <section className='bg-muted/70 dark:bg-accent/30'>
+                <div className='mx-auto max-w-6xl px-4 py-16 text-center sm:px-6'>
+                    <h2 className='mb-3 font-semibold text-2xl tracking-tight'>
+                        Introduction and screenshots
+                    </h2>
+                    <p className='mx-auto mb-8 max-w-lg text-muted-foreground'>
+                        First understand it, then decide whether to use it in production.
+                    </p>
+                    <div className='mx-auto grid max-w-6xl gap-2 grid-cols-1 lg:grid-cols-2'>
+                        {screenshots.map((screenshot) => (
+                            <IntroductionCard
+                                key={screenshot.title}
+                                title={screenshot.title}
+                                description={screenshot.description}
+                                imgSrc={screenshot.src}
+                                className='mx-auto mb-4'
+                            />
+                        ))}
+                    </div>
+                </div>
+            </section>
 
             <section className='mx-auto max-w-6xl px-4 py-16 text-center sm:px-6'>
                 <h2 className='mb-3 font-semibold text-2xl tracking-tight'>Deploy and operate</h2>

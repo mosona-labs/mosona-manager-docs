@@ -2,11 +2,11 @@ import { Menu, Moon, Sun, X } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Link, NavLink } from 'react-router-dom';
 
+import { GithubIcon } from './icons';
 import { useTheme } from '@/components/theme-provider';
 import { Button } from '@/components/ui/button';
 import { site } from '@/lib/site-content';
 import { cn } from '@/lib/utils';
-import { GithubIcon } from './icons';
 
 const nav = [
     { to: '/', label: 'Home' },
@@ -73,17 +73,8 @@ export function SiteHeader() {
                 </nav>
 
                 <div className='flex items-center gap-1'>
-                    <a
-                        href={site.github}
-                        target='_blank'
-                        rel='noreferrer'
-                    >
-                        <Button
-                            type='button'
-                            variant='ghost'
-                            size='icon-sm'
-                            aria-label='Github'
-                        >
+                    <a href={site.github} target='_blank' rel='noreferrer'>
+                        <Button type='button' variant='ghost' size='icon-sm' aria-label='Github'>
                             <GithubIcon />
                         </Button>
                     </a>
