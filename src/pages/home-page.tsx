@@ -14,8 +14,8 @@ export function HomePage() {
     return (
         <div>
             <section className='relative overflow-hidden border-border'>
-                <div className='absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_-20%,oklch(0.55_0.12_250/0.18),transparent)]' />
-                <div className='relative mx-auto grid max-w-6xl gap-10 px-4 py-16 sm:px-6 lg:grid-cols-2 lg:items-center lg:py-24'>
+                <div className='absolute inset-0 bg-[radial-gradient(ellipse_80%_60%_at_50%_-20%,oklch(0.55_0.14_145/0.18),transparent)]' />
+                <div className='relative mx-auto grid max-w-6xl gap-10 px-4 py-16 sm:px-6 lg:grid-cols-2 lg:items-center lg:py-30'>
                     <div className='max-w-xl'>
                         <p className='mb-3 font-mono text-xs tracking-widest text-muted-foreground uppercase'>
                             Server monitor · SSH · Agents
@@ -53,6 +53,7 @@ export function HomePage() {
                         </div>
                     </div>
                     <div className='relative'>
+                        <div className='absolute -inset-8 -z-10 rounded-full bg-green-500/25 blur-3xl dark:bg-green-400/20' />
                         <div className='overflow-hidden rounded-sm shadow-lg shadow-black/10 dark:shadow-black/40'>
                             <img
                                 src={screenshots[0].src}
