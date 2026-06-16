@@ -1,0 +1,6 @@
+packages: []
+
+allowBuilds:
+  '@biomejs/biome': set this to true or false
+  esbuild: true
+  msw: false
