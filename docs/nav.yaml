@@ -3,6 +3,3 @@ sections:
     items:
       - index
       - quickstart
-  - title: Operations
-    items:
-      - connection-modes

@@ -73,7 +73,7 @@ const components: Components = {
     ol: ({ children }) => (
         <ol className='mb-4 list-decimal space-y-2 pl-6 text-muted-foreground'>{children}</ol>
     ),
-    li: ({ children }) => <li className='leading-5'>{children}</li>,
+    li: ({ children }) => <li className='leading-7'>{children}</li>,
     a: ({ href, children }) => {
         const resolved = resolveDocHref(href);
         const className =

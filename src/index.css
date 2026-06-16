@@ -141,3 +141,29 @@
     text-decoration: underline;
     text-underline-offset: 4px;
 }
+
+.docs-code .shiki,
+.docs-code .shiki pre,
+.docs-code .shiki code {
+    background-color: transparent !important;
+}
+
+.docs-code .shiki span {
+    color: var(--shiki-light);
+    background-color: transparent !important;
+    font-style: var(--shiki-light-font-style);
+    font-weight: var(--shiki-light-font-weight);
+    text-decoration: var(--shiki-light-text-decoration);
+}
+
+.dark .docs-code .shiki span {
+    color: var(--shiki-dark);
+    font-style: var(--shiki-dark-font-style);
+    font-weight: var(--shiki-dark-font-weight);
+    text-decoration: var(--shiki-dark-text-decoration);
+}
+
+html {
+    scrollbar-gutter: stable;
+    scrollbar-width: thin;
+}

@@ -58,7 +58,7 @@ export function HomePage() {
                             <img
                                 src={screenshots[0].src}
                                 alt={`Home`}
-                                className='aspect-382/211 w-full object-cover object-top'
+                                className='aspect-382/211 w-full object-cover object-top bg-black'
                                 loading='eager'
                             />
                         </div>
