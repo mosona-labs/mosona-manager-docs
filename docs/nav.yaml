@@ -3,3 +3,7 @@ sections:
     items:
       - index
       - quickstart
+  - title: Others
+    items:
+      - others/versions
+      - others/security-warning

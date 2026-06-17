@@ -75,7 +75,7 @@ export function HomePage() {
                         Introduction and screenshots
                     </h2>
                     <p className='mx-auto mb-8 max-w-lg text-muted-foreground'>
-                        First understand it, then decide whether to use it in production.
+                        First understand it thoroughly, then decide whether to use it in production.
                     </p>
                     <div className='mx-auto grid max-w-6xl gap-2 grid-cols-1 lg:grid-cols-2'>
                         {screenshots.map((screenshot) => (

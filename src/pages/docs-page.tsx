@@ -9,8 +9,8 @@ import { SEO } from '@/lib/seo';
 import { cn } from '@/lib/utils';
 
 export function DocsPage() {
-    const { slug } = useParams();
-    const docSlug = slug ?? '';
+    const { '*': slugSplat } = useParams();
+    const docSlug = slugSplat?.replace(/\/$/, '') ?? '';
     const doc = getDocBySlug(docSlug);
     const docPath = docSlug === '' ? '/docs' : `/docs/${docSlug}`;
 

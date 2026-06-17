@@ -34,11 +34,13 @@ type NavYaml = {
     }[];
 };
 
-const docModules = import.meta.glob('../../docs/*.md', {
+const docModules = import.meta.glob('../../docs/**/*.md', {
     eager: true,
     query: '?raw',
     import: 'default',
 }) as Record<string, string>;
+
+const DOCS_ROOT = '../../docs/';
 
 function navIdToSlug(id: string): string {
     const trimmed = id.trim();
@@ -53,8 +55,12 @@ function slugToHref(slug: string): string {
 }
 
 function slugFromPath(path: string): string {
-    const name = path.split('/').pop()?.replace(/\.md$/, '') ?? 'index';
-    return name === 'index' ? '' : name;
+    const relative = path.startsWith(DOCS_ROOT) ? path.slice(DOCS_ROOT.length) : path;
+    const withoutExt = relative.replace(/\.md$/i, '');
+    if (withoutExt === 'index') {
+        return '';
+    }
+    return withoutExt;
 }
 
 function titleFromMarkdown(content: string, slug: string): string {

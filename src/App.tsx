@@ -11,8 +11,7 @@ export function App() {
             <Routes>
                 <Route element={<SiteLayout />}>
                     <Route index element={<HomePage />} />
-                    <Route path='docs' element={<DocsPage />} />
-                    <Route path='docs/:slug' element={<DocsPage />} />
+                    <Route path='docs/*' element={<DocsPage />} />
                     <Route path='404' element={<NotFoundPage />} />
                     <Route path='*' element={<Navigate to='/404' replace />} />
                 </Route>
