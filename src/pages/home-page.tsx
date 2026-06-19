@@ -98,7 +98,7 @@ export function HomePage() {
                     up your hub.
                 </p>
                 <Button asChild size='lg'>
-                    <Link to='/docs/quickstart'>Open quickstart</Link>
+                    <Link to='/docs/quickstart#quickstart'>Open quickstart</Link>
                 </Button>
             </section>
         </div>
