@@ -20,7 +20,7 @@ export const SEO = {
     twitterCard: 'summary_large_image',
     themeColorLight: '#ffffff',
     themeColorDark: '#1a1a1a',
-    ogImage: 'https://github.com/user-attachments/assets/6e486a04-647a-4201-a0d8-977d7994f832',
+    ogImage: '/screenshots/1.jpg',
     ogImageAlt: 'Mosona Manager dashboard overview',
 } as const;
 

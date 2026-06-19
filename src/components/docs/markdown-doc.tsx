@@ -66,6 +66,15 @@ const components: Components = {
             {children}
         </h3>
     ),
+    h4: ({ children, id, ...props }) => (
+        <h4
+            id={id}
+            {...props}
+            className='mt-4 mb-3 scroll-mt-24 font-semibold text-sm tracking-tight'
+        >
+            {children}
+        </h4>
+    ),
     p: ({ children }) => <p className='mb-4 leading-7 text-muted-foreground'>{children}</p>,
     ul: ({ children }) => (
         <ul className='mb-4 list-disc space-y-2 pl-6 text-muted-foreground'>{children}</ul>
