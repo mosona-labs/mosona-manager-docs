@@ -1,5 +1,16 @@
 # Versions
 
+## v0.1.5 (07/07/2026)
+
+Github: [bb6de84...53df6a3](https://github.com/mosona-labs/mosona-manager/compare/bb6de845472bf9690a1fbb1071a0f08be48eed70...53df6a3324eace947898e6b90dfc26e853e43080)
+
+#### Fix
+
+1. Fixed the issue where flags and logos could not be loaded when the public page is running in standalone domain mode.
+1. Fixed the dependency crash when setting up TOTP.
+1. Fixed the issue where global alerts do not take effect after configuration.
+1. Fixed the overly strict judgment condition for Dashboard SSE.
+
 ## v0.1.4 (18/06/2026)
 
 Github: [87faa66...dfa981c](https://github.com/mosona-labs/mosona-manager/compare/87faa66b6dc56047e0c92a4466d8d7ebf2fca980...dfa981c21e88ec7828b14a77af3f10965a108c23)
