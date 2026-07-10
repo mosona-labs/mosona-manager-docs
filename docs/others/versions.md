@@ -2,6 +2,8 @@
 
 ## v0.1.6 (10/07/2026)
 
+Github: [8ee7b10...f4b6b93](https://github.com/mosona-labs/mosona-manager/compare/8ee7b10a1c7e5646f9c5f7a399641870889a6fdf...f4b6b933f52851edfc93d18860b0d9a500fec623)
+
 #### New Features
 
 1. Team import now supports unencrypted team export files (encrypted imports remain supported).
