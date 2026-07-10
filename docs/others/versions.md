@@ -1,5 +1,21 @@
 # Versions
 
+## v0.1.6 (10/07/2026)
+
+#### New Features
+
+1. Team import now supports unencrypted team export files (encrypted imports remain supported).
+
+#### Improvements & Refactors
+
+1. Moved Trust Proxy from static env-only configuration to a dynamic, admin-configurable setting.
+
+#### Fix
+
+1. Validated session IP binding on login and handled empty IP geolocation data.
+1. Handled missing country data in IP geolocation (with tests).
+1. Cleared stale InfluxDB server status when adding or importing servers.
+
 ## v0.1.5 (07/07/2026)
 
 Github: [bb6de84...53df6a3](https://github.com/mosona-labs/mosona-manager/compare/bb6de845472bf9690a1fbb1071a0f08be48eed70...53df6a3324eace947898e6b90dfc26e853e43080)

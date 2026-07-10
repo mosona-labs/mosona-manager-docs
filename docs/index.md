@@ -14,3 +14,4 @@ Mosona Manager is a team-oriented / personal project management server monitor a
 ## Quick links
 
 - [Quickstart](./quickstart.md) — installation and first deployment
+- [Settings Guide](./settings-guide.md) — admin settings reference

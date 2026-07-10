@@ -3,6 +3,9 @@ sections:
     items:
       - index
       - quickstart
+  - title: Settings
+    items:
+      - settings-guide
   - title: Others
     items:
       - others/versions
