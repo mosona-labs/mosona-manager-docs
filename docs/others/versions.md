@@ -1,5 +1,17 @@
 # Versions
 
+## v0.1.7 (14/07/2026)
+
+Github: [170aec1...2e0bc8f](https://github.com/mosona-labs/mosona-manager/compare/170aec125239d72c5aef0d83573b6536819f414e...2e0bc8fc2cdf953b20cd344e5aba88344e347459)
+
+#### New Features
+
+1. Added full i18n support: Arabic (with RTL), German, Korean, Malay, French, Japanese, Portuguese, Russian, English, Spanish, Chinese Simplified & Traditional.
+
+#### Fix
+
+1. Fixed public-preview static frontend files serving with relative paths.
+
 ## v0.1.6 (10/07/2026)
 
 Github: [8ee7b10...f4b6b93](https://github.com/mosona-labs/mosona-manager/compare/8ee7b10a1c7e5646f9c5f7a399641870889a6fdf...f4b6b933f52851edfc93d18860b0d9a500fec623)
