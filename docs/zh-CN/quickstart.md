@@ -1,6 +1,8 @@
 # 快速开始
 
-目前仅支持通过 Docker Compose 部署。
+推荐使用 **Docker Compose** 部署 Mosona Manager。
+
+若需要自行运行 Hub 二进制（物理机、systemd，或外部数据库），请参阅 [手动部署](./manual-deploy.md)。
 
 ## 前置条件
 

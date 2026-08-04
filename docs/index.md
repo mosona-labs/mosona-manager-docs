@@ -13,5 +13,6 @@ Mosona Manager is a team-oriented / personal project management server monitor a
 
 ## Quick links
 
-- [Quickstart](./quickstart.md) — installation and first deployment
+- [Quickstart](./quickstart.md) — installation and first deployment (Docker Compose)
+- [Manual deployment](./manual-deploy.md) — run the Hub binary yourself
 - [Settings Guide](./settings-guide.md) — admin settings reference

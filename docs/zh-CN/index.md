@@ -13,5 +13,6 @@ Mosona Manager 是一款面向团队 / 个人的项目管理、服务器监控�
 
 ## 快速链接
 
-- [快速开始](./quickstart.md) — 安装与首次部署
+- [快速开始](./quickstart.md) — 安装与首次部署（Docker Compose）
+- [手动部署](./manual-deploy.md) — 自行运行 Hub 二进制
 - [设置指南](./settings-guide.md) — 管理后台设置说明

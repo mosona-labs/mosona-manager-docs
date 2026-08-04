@@ -3,6 +3,7 @@ sections:
     items:
       - index
       - quickstart
+      - manual-deploy
   - title: Settings
     items:
       - settings-guide

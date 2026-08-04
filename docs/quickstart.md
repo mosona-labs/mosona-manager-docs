@@ -1,6 +1,8 @@
 # Quickstart
 
-At present, we only support deployment via Docker Compose.
+The recommended way to deploy Mosona Manager is **Docker Compose**.
+
+If you need to run the Hub binary yourself (bare metal, systemd, or external databases), see [Manual deployment](./manual-deploy.md).
 
 ## Prerequisites
 
@@ -68,7 +70,7 @@ Adjust the port if your Hub listens elsewhere.
 
 ## Finish
 
-TThe official build only exposes the HTTP port. If you want to make the Hub publicly accessible via HTTPS with a custom domain, you have two main options:
+The official build only exposes the HTTP port. If you want to make the Hub publicly accessible via HTTPS with a custom domain, you have two main options:
 
 - Use [Cloudflare Tunnel](https://developers.cloudflare.com/tunnel/) to expose the Hub to the internet. Cloudflare Tunnel will automatically provide you with an accessible HTTPS domain name.
 - Deploy a reverse proxy with TLS termination (such as [Nginx](https://nginx.org/), [Caddy](https://caddyserver.com/), or [Traefik](https://traefik.io/traefik)) in front of the Hub, and forward HTTPS requests to the Hub's HTTP port.
