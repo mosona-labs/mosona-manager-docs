@@ -1,6 +1,9 @@
+import { useLocale } from '@/components/locale-provider';
 import { site } from '@/lib/site-content';
 
 export function SiteFooter() {
+    const { messages } = useLocale();
+
     return (
         <footer className='border-t border-border'>
             <div className='mx-auto flex max-w-6xl flex-col gap-4 px-4 py-4 text-sm text-muted-foreground sm:flex-row sm:items-center sm:justify-between sm:px-6'>
@@ -22,7 +25,7 @@ export function SiteFooter() {
                         rel='noreferrer'
                         className='hover:text-foreground'
                     >
-                        GitHub
+                        {messages.footer.github}
                     </a>
                     <a
                         href={site.discord}
@@ -30,7 +33,7 @@ export function SiteFooter() {
                         rel='noreferrer'
                         className='hover:text-foreground'
                     >
-                        Discord
+                        {messages.footer.discord}
                     </a>
                     <a
                         href={site.discussions}
@@ -38,7 +41,7 @@ export function SiteFooter() {
                         rel='noreferrer'
                         className='hover:text-foreground'
                     >
-                        Discussions
+                        {messages.footer.discussions}
                     </a>
                 </div>
             </div>

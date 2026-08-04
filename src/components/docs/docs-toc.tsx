@@ -6,9 +6,10 @@ import { cn } from '@/lib/utils';
 
 type DocsTocProps = {
     headings: DocHeading[];
+    label?: string;
 };
 
-export function DocsToc({ headings }: DocsTocProps) {
+export function DocsToc({ headings, label = 'On this page' }: DocsTocProps) {
     const [activeId, setActiveId] = useState<string>('');
 
     useEffect(() => {
@@ -49,8 +50,8 @@ export function DocsToc({ headings }: DocsTocProps) {
     }
 
     return (
-        <nav aria-label='On this page' className='text-sm'>
-            <p className='mb-3 font-medium text-foreground'>On this page</p>
+        <nav aria-label={label} className='text-sm'>
+            <p className='mb-3 font-medium text-foreground'>{label}</p>
             <ul className='space-y-1 border-l border-border pl-3'>
                 {headings.map((heading) => (
                     <li key={heading.id}>

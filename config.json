@@ -1,0 +1,307 @@
+{
+  "defaultLocale": "en",
+  "locales": {
+    "en": {
+      "name": "English",
+      "nativeName": "English"
+    },
+    "zh-CN": {
+      "name": "Simplified Chinese",
+      "nativeName": "简体中文"
+    },
+    "zh-HK": {
+      "name": "Traditional Chinese (HK)",
+      "nativeName": "繁體中文（香港）"
+    }
+  },
+  "messages": {
+    "en": {
+      "nav": {
+        "home": "Home",
+        "docs": "Docs"
+      },
+      "header": {
+        "siteName": "Mosona Manager",
+        "github": "GitHub",
+        "toggleTheme": "Toggle theme",
+        "openMenu": "Open menu",
+        "closeMenu": "Close menu"
+      },
+      "home": {
+        "badge": "Server monitor · SSH · Agents",
+        "titleBrand": "Mosona",
+        "titleRest": "Manager",
+        "description": "Team-oriented / Personal server monitor and terminal management with project permissions and Agent & SSH remote control.",
+        "getStarted": "Get started",
+        "viewOnGithub": "View on GitHub",
+        "heroImageAlt": "Home",
+        "introTitle": "Introduction and screenshots",
+        "introDescription": "First understand it thoroughly, then decide whether to use it in production.",
+        "deployTitle": "Deploy and operate",
+        "deployDescription": "Docker Compose stack with Postgres and InfluxDB. Follow the quickstart to bring up your hub.",
+        "openQuickstart": "Open quickstart",
+        "screenshots": [
+          {
+            "title": "Home",
+            "description": "Overview of all your servers, their status, and recent activity."
+          },
+          {
+            "title": "Terminal",
+            "description": "Access your servers via SSH or Mosona Agent, with project-based permissions."
+          },
+          {
+            "title": "New server",
+            "description": "Step-by-step form to register servers and configure monitoring."
+          },
+          {
+            "title": "Monitor",
+            "description": "Real-time and periodic charts from InfluxDB metrics."
+          },
+          {
+            "title": "Set public page",
+            "description": "Configure your public-facing status page for shared project visibility."
+          },
+          {
+            "title": "Public page",
+            "description": "Public-facing status page for shared project visibility."
+          },
+          {
+            "title": "User Profile",
+            "description": "Manage your account, notifications, and personal preferences."
+          },
+          {
+            "title": "Admin",
+            "description": "Manage users, roles, projects, and system-wide settings."
+          }
+        ]
+      },
+      "footer": {
+        "github": "GitHub",
+        "discord": "Discord",
+        "discussions": "Discussions"
+      },
+      "docs": {
+        "pageNotFoundTitle": "Page not found",
+        "pageNotFoundDescription": "This documentation page does not exist.",
+        "backToDocs": "Back to docs",
+        "onThisPage": "On this page",
+        "missingTranslationTitle": "This page is not available in {language}",
+        "missingTranslationDescription": "You are viewing the original version. You can switch to the original language, or open another available translation below.",
+        "readOriginal": "Read original ({language})",
+        "otherTranslations": "Other available translations",
+        "docDescription": "{title} — Mosona Manager documentation.",
+        "navSections": {
+          "Introduction": "Introduction",
+          "Settings": "Settings",
+          "Others": "Others",
+          "More": "More",
+          "Docs": "Docs"
+        }
+      },
+      "notFound": {
+        "title": "Page not found",
+        "backHome": "Back home"
+      },
+      "language": {
+        "label": "Language",
+        "select": "Select language"
+      },
+      "seo": {
+        "defaultTitle": "Mosona Manager — Server Monitor & SSH Terminal",
+        "description": "Team-oriented server monitor and terminal management: project permissions, real-time monitoring, SSH and Mosona Agent, notifications, API, and public status pages."
+      }
+    },
+    "zh-CN": {
+      "nav": {
+        "home": "首页",
+        "docs": "文档"
+      },
+      "header": {
+        "siteName": "Mosona Manager",
+        "github": "GitHub",
+        "toggleTheme": "切换主题",
+        "openMenu": "打开菜单",
+        "closeMenu": "关闭菜单"
+      },
+      "home": {
+        "badge": "服务器监控 · SSH · Agent",
+        "titleBrand": "Mosona",
+        "titleRest": "Manager",
+        "description": "面向团队 / 个人的服务器监控与终端管理工具，支持项目级权限控制，以及 Agent 与 SSH 远程管控。",
+        "getStarted": "快速开始",
+        "viewOnGithub": "在 GitHub 查看",
+        "heroImageAlt": "首页",
+        "introTitle": "功能介绍与截图",
+        "introDescription": "先完整了解产品能力，再决定是否用于生产环境。",
+        "deployTitle": "部署与运维",
+        "deployDescription": "基于 Docker Compose，内置 Postgres 与 InfluxDB。按快速开始文档即可拉起你的 Hub。",
+        "openQuickstart": "打开快速开始",
+        "screenshots": [
+          {
+            "title": "首页",
+            "description": "总览全部服务器、运行状态与近期活动。"
+          },
+          {
+            "title": "终端",
+            "description": "通过 SSH 或 Mosona Agent 接入服务器，并按项目分配权限。"
+          },
+          {
+            "title": "添加服务器",
+            "description": "分步表单注册服务器并配置监控。"
+          },
+          {
+            "title": "监控",
+            "description": "来自 InfluxDB 的实时与周期指标图表。"
+          },
+          {
+            "title": "设置公开页",
+            "description": "配置面向共享项目可见性的公开状态页。"
+          },
+          {
+            "title": "公开页",
+            "description": "用于共享项目状态的公开页面。"
+          },
+          {
+            "title": "用户资料",
+            "description": "管理账户、通知与个人偏好。"
+          },
+          {
+            "title": "管理后台",
+            "description": "管理用户、角色、项目与系统级设置。"
+          }
+        ]
+      },
+      "footer": {
+        "github": "GitHub",
+        "discord": "Discord",
+        "discussions": "讨论区"
+      },
+      "docs": {
+        "pageNotFoundTitle": "页面不存在",
+        "pageNotFoundDescription": "这篇文档页面不存在。",
+        "backToDocs": "返回文档",
+        "onThisPage": "本页目录",
+        "missingTranslationTitle": "此页面暂无 {language} 译本",
+        "missingTranslationDescription": "当前显示的是原始语言版本。你可以切换到原始语言阅读，或选择下方其他已有译本。",
+        "readOriginal": "阅读原始版本（{language}）",
+        "otherTranslations": "其他可用译本",
+        "docDescription": "{title} — Mosona Manager 文档。",
+        "navSections": {
+          "Introduction": "入门",
+          "Settings": "设置",
+          "Others": "其他",
+          "More": "更多",
+          "Docs": "文档"
+        }
+      },
+      "notFound": {
+        "title": "页面不存在",
+        "backHome": "返回首页"
+      },
+      "language": {
+        "label": "语言",
+        "select": "选择语言"
+      },
+      "seo": {
+        "defaultTitle": "Mosona Manager — 服务器监控与 SSH 终端",
+        "description": "面向团队的服务器监控与终端管理：项目权限、实时监控、SSH 与 Mosona Agent、通知、API 与公开状态页。"
+      }
+    },
+    "zh-HK": {
+      "nav": {
+        "home": "主頁",
+        "docs": "文件"
+      },
+      "header": {
+        "siteName": "Mosona Manager",
+        "github": "GitHub",
+        "toggleTheme": "切換主題",
+        "openMenu": "開啟選單",
+        "closeMenu": "關閉選單"
+      },
+      "home": {
+        "badge": "伺服器監察 · SSH · Agent",
+        "titleBrand": "Mosona",
+        "titleRest": "Manager",
+        "description": "面向團隊／個人的伺服器監察與終端機管理工具，支援項目級權限控制，以及 Agent 與 SSH 遠端管控。",
+        "getStarted": "快速開始",
+        "viewOnGithub": "在 GitHub 查看",
+        "heroImageAlt": "主頁",
+        "introTitle": "功能介紹與截圖",
+        "introDescription": "先完整了解產品能力，再決定是否用於生產環境。",
+        "deployTitle": "部署與營運",
+        "deployDescription": "建基於 Docker Compose，內置 Postgres 與 InfluxDB。按快速開始文件即可拉起你的 Hub。",
+        "openQuickstart": "開啟快速開始",
+        "screenshots": [
+          {
+            "title": "主頁",
+            "description": "總覽全部伺服器、運行狀態與近期活動。"
+          },
+          {
+            "title": "終端機",
+            "description": "透過 SSH 或 Mosona Agent 接駁伺服器，並按項目分配權限。"
+          },
+          {
+            "title": "新增伺服器",
+            "description": "分步表單登記伺服器並設定監察。"
+          },
+          {
+            "title": "監察",
+            "description": "來自 InfluxDB 的即時與週期指標圖表。"
+          },
+          {
+            "title": "設定公開頁",
+            "description": "設定面向共用項目可見性的公開狀態頁。"
+          },
+          {
+            "title": "公開頁",
+            "description": "用於共用項目狀態的公開頁面。"
+          },
+          {
+            "title": "用戶資料",
+            "description": "管理帳戶、通知與個人偏好。"
+          },
+          {
+            "title": "管理後台",
+            "description": "管理用戶、角色、項目與系統級設定。"
+          }
+        ]
+      },
+      "footer": {
+        "github": "GitHub",
+        "discord": "Discord",
+        "discussions": "討論區"
+      },
+      "docs": {
+        "pageNotFoundTitle": "找不到頁面",
+        "pageNotFoundDescription": "這篇文件頁面不存在。",
+        "backToDocs": "返回文件",
+        "onThisPage": "本頁目錄",
+        "missingTranslationTitle": "此頁面暫無 {language} 譯本",
+        "missingTranslationDescription": "目前顯示的是原始語言版本。你可以切換至原始語言閱讀，或選擇下方其他已有譯本。",
+        "readOriginal": "閱讀原始版本（{language}）",
+        "otherTranslations": "其他可用譯本",
+        "docDescription": "{title} — Mosona Manager 文件。",
+        "navSections": {
+          "Introduction": "入門",
+          "Settings": "設定",
+          "Others": "其他",
+          "More": "更多",
+          "Docs": "文件"
+        }
+      },
+      "notFound": {
+        "title": "找不到頁面",
+        "backHome": "返回主頁"
+      },
+      "language": {
+        "label": "語言",
+        "select": "選擇語言"
+      },
+      "seo": {
+        "defaultTitle": "Mosona Manager — 伺服器監察與 SSH 終端機",
+        "description": "面向團隊的伺服器監察與終端機管理：項目權限、即時監察、SSH 與 Mosona Agent、通知、API 與公開狀態頁。"
+      }
+    }
+  }
+}

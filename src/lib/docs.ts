@@ -2,6 +2,7 @@ import GithubSlugger from 'github-slugger';
 import YAML from 'yaml';
 
 import navYamlRaw from '../../docs/nav.yaml?raw';
+import { defaultLocale, isLocaleDirectoryName, type LocaleCode, localeCodes } from '@/lib/i18n';
 
 export type DocHeading = {
     id: string;
@@ -14,6 +15,14 @@ export type DocEntry = {
     title: string;
     content: string;
     headings: DocHeading[];
+    locale: LocaleCode;
+};
+
+export type ResolvedDoc = DocEntry & {
+    /** True when content falls back to the default-locale copy. */
+    isFallback: boolean;
+    /** Locales that have a real copy of this slug (always includes default if the page exists). */
+    availableLocales: LocaleCode[];
 };
 
 export type DocNavItem = {
@@ -54,13 +63,36 @@ function slugToHref(slug: string): string {
     return slug === '' ? '/docs' : `/docs/${slug}`;
 }
 
-function slugFromPath(path: string): string {
+function parseDocPath(path: string): { locale: LocaleCode; slug: string } | null {
     const relative = path.startsWith(DOCS_ROOT) ? path.slice(DOCS_ROOT.length) : path;
-    const withoutExt = relative.replace(/\.md$/i, '');
-    if (withoutExt === 'index') {
-        return '';
+    if (!relative.toLowerCase().endsWith('.md')) {
+        return null;
     }
-    return withoutExt;
+
+    const withoutExt = relative.replace(/\.md$/i, '');
+    const parts = withoutExt.split('/');
+    if (parts.length === 0 || parts.some((part) => part === '')) {
+        return null;
+    }
+
+    let locale: LocaleCode = defaultLocale;
+    let slugParts = parts;
+
+    if (isLocaleDirectoryName(parts[0])) {
+        locale = parts[0];
+        slugParts = parts.slice(1);
+        if (slugParts.length === 0) {
+            return null;
+        }
+    }
+
+    // Guard: a path segment that looks like a locale dir deeper in the tree is fine as content.
+    let slug = slugParts.join('/');
+    if (slug === 'index') {
+        slug = '';
+    }
+
+    return { locale, slug };
 }
 
 function titleFromMarkdown(content: string, slug: string): string {
@@ -72,6 +104,8 @@ function titleFromMarkdown(content: string, slug: string): string {
         return 'Documentation';
     }
     return slug
+        .split('/')
+        .pop()!
         .split('-')
         .map((part) => part.charAt(0).toUpperCase() + part.slice(1))
         .join(' ');
@@ -100,15 +134,77 @@ export function extractHeadings(markdown: string): DocHeading[] {
 }
 
 function buildDocs(): DocEntry[] {
-    return Object.entries(docModules).map(([path, content]) => {
-        const slug = slugFromPath(path);
-        return {
-            slug,
-            title: titleFromMarkdown(content, slug),
+    const entries: DocEntry[] = [];
+
+    for (const [path, content] of Object.entries(docModules)) {
+        const parsed = parseDocPath(path);
+        if (!parsed) {
+            continue;
+        }
+        // Only accept locale folders declared in config (default lives at docs root).
+        if (parsed.locale !== defaultLocale && !localeCodes.includes(parsed.locale)) {
+            continue;
+        }
+        entries.push({
+            slug: parsed.slug,
+            locale: parsed.locale,
+            title: titleFromMarkdown(content, parsed.slug),
             content,
             headings: extractHeadings(content),
+        });
+    }
+
+    return entries;
+}
+
+export const docs: DocEntry[] = buildDocs();
+
+function docsForLocale(locale: LocaleCode): DocEntry[] {
+    return docs.filter((doc) => doc.locale === locale);
+}
+
+export function getAvailableLocalesForSlug(slug: string): LocaleCode[] {
+    const found = new Set<LocaleCode>();
+    for (const doc of docs) {
+        if (doc.slug === slug) {
+            found.add(doc.locale);
+        }
+    }
+    // Stable order: default first, then config order.
+    return localeCodes.filter((code) => found.has(code));
+}
+
+export function getDocBySlug(
+    slug: string,
+    locale: LocaleCode = defaultLocale
+): ResolvedDoc | undefined {
+    const availableLocales = getAvailableLocalesForSlug(slug);
+    if (availableLocales.length === 0) {
+        return undefined;
+    }
+
+    const localized = docs.find((doc) => doc.slug === slug && doc.locale === locale);
+    if (localized) {
+        return {
+            ...localized,
+            isFallback: false,
+            availableLocales,
         };
-    });
+    }
+
+    const fallback =
+        docs.find((doc) => doc.slug === slug && doc.locale === defaultLocale) ??
+        docs.find((doc) => doc.slug === slug);
+
+    if (!fallback) {
+        return undefined;
+    }
+
+    return {
+        ...fallback,
+        isFallback: true,
+        availableLocales,
+    };
 }
 
 function entryToNavItem(entry: DocEntry): DocNavItem {
@@ -119,8 +215,29 @@ function entryToNavItem(entry: DocEntry): DocNavItem {
     };
 }
 
-function buildDocNavSections(allDocs: DocEntry[]): DocNavSection[] {
-    const bySlug = new Map(allDocs.map((doc) => [doc.slug, doc]));
+/**
+ * Build sidebar nav for a locale. Item titles prefer the localized doc title,
+ * falling back to the default-locale title. Section titles come from nav.yaml
+ * and can be remapped by the caller via `translateSectionTitle`.
+ */
+export function buildDocNavSections(
+    locale: LocaleCode = defaultLocale,
+    translateSectionTitle: (title: string) => string = (title) => title
+): DocNavSection[] {
+    const defaultDocs = docsForLocale(defaultLocale);
+    const localizedBySlug = new Map(docsForLocale(locale).map((doc) => [doc.slug, doc]));
+    const defaultBySlug = new Map(defaultDocs.map((doc) => [doc.slug, doc]));
+
+    // Union of slugs: default docs define the canonical set; orphan localized pages are appended.
+    const allSlugs = new Set<string>([
+        ...defaultDocs.map((doc) => doc.slug),
+        ...docs.filter((doc) => doc.locale === locale).map((doc) => doc.slug),
+    ]);
+
+    const resolveEntry = (slug: string): DocEntry | undefined => {
+        return localizedBySlug.get(slug) ?? defaultBySlug.get(slug);
+    };
+
     const used = new Set<string>();
     const sections: DocNavSection[] = [];
 
@@ -135,7 +252,7 @@ function buildDocNavSections(allDocs: DocEntry[]): DocNavSection[] {
         const items: DocNavItem[] = [];
         for (const id of section.items ?? []) {
             const slug = navIdToSlug(id);
-            const doc = bySlug.get(slug);
+            const doc = resolveEntry(slug);
             if (!doc) {
                 if (import.meta.env.DEV) {
                     console.warn(`[docs/nav.yaml] Unknown page id "${id}" (slug "${slug}")`);
@@ -149,21 +266,24 @@ function buildDocNavSections(allDocs: DocEntry[]): DocNavSection[] {
             items.push(entryToNavItem(doc));
         }
         if (items.length > 0) {
+            const rawTitle = section.title?.trim() || 'Docs';
             sections.push({
-                title: section.title?.trim() || 'Docs',
+                title: translateSectionTitle(rawTitle),
                 items,
             });
         }
     }
 
-    const remaining = allDocs
-        .filter((doc) => !used.has(doc.slug))
+    const remaining = [...allSlugs]
+        .filter((slug) => !used.has(slug))
+        .map((slug) => resolveEntry(slug))
+        .filter((doc): doc is DocEntry => Boolean(doc))
         .sort((a, b) => a.title.localeCompare(b.title))
         .map(entryToNavItem);
 
     if (remaining.length > 0) {
         sections.push({
-            title: 'More',
+            title: translateSectionTitle('More'),
             items: remaining,
         });
     }
@@ -171,8 +291,10 @@ function buildDocNavSections(allDocs: DocEntry[]): DocNavSection[] {
     if (sections.length === 0) {
         return [
             {
-                title: 'Docs',
-                items: [...allDocs]
+                title: translateSectionTitle('Docs'),
+                items: [...allSlugs]
+                    .map((slug) => resolveEntry(slug))
+                    .filter((doc): doc is DocEntry => Boolean(doc))
                     .sort((a, b) => a.title.localeCompare(b.title))
                     .map(entryToNavItem),
             },
@@ -182,12 +304,7 @@ function buildDocNavSections(allDocs: DocEntry[]): DocNavSection[] {
     return sections;
 }
 
-export const docs: DocEntry[] = buildDocs();
-
-export function getDocBySlug(slug: string): DocEntry | undefined {
-    return docs.find((doc) => doc.slug === slug);
-}
-
-export const docNavSections: DocNavSection[] = buildDocNavSections(docs);
+/** @deprecated Prefer buildDocNavSections(locale) — kept for static default export consumers. */
+export const docNavSections: DocNavSection[] = buildDocNavSections(defaultLocale);
 
 export const docNav: DocNavItem[] = docNavSections.flatMap((section) => section.items);
