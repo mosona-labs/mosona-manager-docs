@@ -232,7 +232,7 @@ When TLS ends at the proxy:
 
 1. Set `SECURE_COOKIES=true` for the Hub process.
 2. In Admin → settings, set **Base URL** to your public `https://…/` origin.
-3. Enable **Trust Proxy** only if the Hub is solely reachable through a trusted proxy/CDN. See [Security Warning](./others/security-warning.md).
+3. Enable **Admin Dashboard → General → Trust CDN / reverse proxy headers** so the Hub can read the real client IP from proxy headers (`X-Forwarded-For`, `CF-Connecting-IP`, and similar). Without this, the Hub only sees the proxy’s own address. Enable it **only** if the Hub is solely reachable through a trusted proxy/CDN. See [Security Warning](./others/security-warning.md).
 
 ## Upgrade
 
@@ -252,7 +252,8 @@ Keep `.env`, PostgreSQL/Redis/Influx data volumes, and the `avatars/` directory 
 | Exits mentioning InfluxDB / organization | `INFLUXDB_URL`, org name, token permissions; Influx must already be set up |
 | Exits mentioning Redis | `REDIS_HOST` / `REDIS_PORT`; use `REDIS_PASSWORD` if auth is enabled |
 | UI is blank or 404 for assets | Rebuild frontends; confirm `FRONTEND_DIR` points at the built tree; public page needs `static/public-preview` with rewritten asset paths |
-| Cookies / login oddities behind HTTPS proxy | `SECURE_COOKIES=true`, correct Base URL, Trust Proxy only behind a real proxy |
+| Cookies / login oddities behind HTTPS proxy | `SECURE_COOKIES=true`, correct Base URL, and **Admin Dashboard → General → Trust CDN / reverse proxy headers** only behind a real proxy |
+| Client IP always shows the proxy address | Enable **Trust CDN / reverse proxy headers** in Admin Dashboard → General (only when Hub is solely behind a trusted proxy/CDN) |
 | `mosona-manager health` fails | Hub not listening yet, wrong `HOST`/`PORT`, or process crashed on boot — check logs |
 
 ## Related

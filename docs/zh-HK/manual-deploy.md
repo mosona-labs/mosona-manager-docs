@@ -232,7 +232,7 @@ sudo systemctl status mosona-manager
 
 1. 為 Hub 進程設定 `SECURE_COOKIES=true`。
 2. 在管理後台設定中，將 **Base URL** 設為公開的 `https://…/` 來源位址。
-3. **只**在 Hub 只透過受信任代理／CDN 存取時啟用 **Trust Proxy**。詳見 [保安警告](./others/security-warning.md)。
+3. 啟用 **Admin Dashboard → General → Trust CDN / reverse proxy headers（信任 CDN／反向代理請求標頭）**，以便 Hub 能從代理標頭（如 `X-Forwarded-For`、`CF-Connecting-IP` 等）讀取真實用戶端 IP。若不啟用，Hub 只能看到代理自身的位址。**只**在 Hub 只透過受信任代理／CDN 存取時啟用。詳見 [保安警告](./others/security-warning.md)。
 
 ## 升級
 
@@ -252,7 +252,8 @@ sudo systemctl status mosona-manager
 | 退出並提示 InfluxDB／organization | 檢查 `INFLUXDB_URL`、組織名稱、token 權限；Influx 需已完成初始化 |
 | 退出並提示 Redis | 檢查 `REDIS_HOST`／`REDIS_PORT`；若啟用認證請使用 `REDIS_PASSWORD` |
 | 介面空白或靜態資源 404 | 重新建置前端；確認 `FRONTEND_DIR` 指向建置產物；公開頁需要帶改寫路徑的 `static/public-preview` |
-| HTTPS 代理後 Cookie／登入異常 | `SECURE_COOKIES=true`、Base URL 正確，且只在真實代理後啟用 Trust Proxy |
+| HTTPS 代理後 Cookie／登入異常 | `SECURE_COOKIES=true`、Base URL 正確，且只在真實代理後啟用 **Admin Dashboard → General → Trust CDN / reverse proxy headers** |
+| 用戶端 IP 始終顯示為代理位址 | 在 Admin Dashboard → General 啟用 **Trust CDN / reverse proxy headers**（只在 Hub 只位於受信任代理／CDN 之後時） |
 | `mosona-manager health` 失敗 | Hub 尚未監聽、`HOST`／`PORT` 不正確，或啟動崩潰 — 查看日誌 |
 
 ## 相關文件
