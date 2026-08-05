@@ -4,6 +4,9 @@ sections:
       - index
       - quickstart
       - manual-deploy
+  - title: Step by Step
+    items:
+      - step-by-step/full-install.md
   - title: Q&A
     items:
       - q&a/solutions-to-common-problems

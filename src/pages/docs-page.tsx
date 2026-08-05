@@ -99,7 +99,7 @@ export function DocsPage() {
                     ) : null}
                 </div>
 
-                <aside className='hidden min-h-0 xl:block'>
+                <aside className='hidden min-h-0 lg:block'>
                     <div className={cn(stickyPanelClassName, 'pl-1')}>
                         <DocsToc headings={doc.headings} label={messages.docs.onThisPage} />
                     </div>

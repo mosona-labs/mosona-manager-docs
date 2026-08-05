@@ -5,6 +5,7 @@ import { useMemo } from 'react';
 import ReactMarkdown from 'react-markdown';
 import { Link } from 'react-router-dom';
 import rehypeAutolinkHeadings from 'rehype-autolink-headings';
+import rehypeRaw from 'rehype-raw';
 import rehypeSlug from 'rehype-slug';
 import remarkGfm from 'remark-gfm';
 
@@ -141,6 +142,16 @@ function buildComponents(afterTitle?: ReactNode): Components {
             <td className='border border-border px-3 py-2 text-muted-foreground'>{children}</td>
         ),
         hr: () => <hr className='my-8 border-border' />,
+        img: ({ src, alt, className, style, ...props }) => (
+            <img
+                src={src}
+                alt={alt ?? ''}
+                style={style}
+                className={cn('my-4 h-auto max-w-full rounded-md', className)}
+                loading='lazy'
+                {...props}
+            />
+        ),
         code: ({ className, children }) => {
             const isBlock = Boolean(className?.includes('language-'));
             if (isBlock) {
@@ -168,6 +179,7 @@ export function MarkdownDoc({ content, className, afterTitle }: MarkdownDocProps
             <ReactMarkdown
                 remarkPlugins={[remarkGfm]}
                 rehypePlugins={[
+                    rehypeRaw,
                     rehypeSlug,
                     [
                         rehypeAutolinkHeadings,
