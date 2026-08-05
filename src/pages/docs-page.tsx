@@ -61,16 +61,23 @@ export function DocsPage() {
         <MissingTranslationCard availableLocales={doc.availableLocales} />
     ) : null;
 
+    // Sidebars float on their own under the header and must not share the article's
+    // vertical padding; otherwise the first screen clips the panel bottom.
+    const stickyPanelClassName = cn(
+        'sticky top-14 max-h-[calc(100svh-3.5rem)] overflow-y-auto overscroll-none py-6',
+        '[scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden'
+    );
+
     return (
-        <div className='mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:py-12'>
+        <div className='mx-auto max-w-6xl px-4 sm:px-6'>
             <div className='grid gap-10 lg:grid-cols-[220px_minmax(0,1fr)_200px]'>
-                <aside className='hidden lg:block'>
-                    <div className='sticky top-20'>
+                <aside className='hidden min-h-0 lg:block'>
+                    <div className={cn(stickyPanelClassName, 'pr-2')}>
                         <DocsSidebarNav sections={docNavSections} activeSlug={doc.slug} />
                     </div>
                 </aside>
 
-                <div className='min-w-0'>
+                <div className='min-w-0 py-10 lg:py-12'>
                     <nav
                         className='mb-6 flex flex-wrap gap-2 lg:hidden'
                         aria-label='Documentation mobile'
@@ -91,8 +98,8 @@ export function DocsPage() {
                     <MarkdownDoc content={doc.content} afterTitle={afterTitle} />
                 </div>
 
-                <aside className='hidden xl:block'>
-                    <div className='sticky top-20'>
+                <aside className='hidden min-h-0 xl:block'>
+                    <div className={cn(stickyPanelClassName, 'pl-1')}>
                         <DocsToc headings={doc.headings} label={messages.docs.onThisPage} />
                     </div>
                 </aside>

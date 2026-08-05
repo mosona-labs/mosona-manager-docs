@@ -107,7 +107,7 @@ export function HomePage() {
                     {home.deployDescription}
                 </p>
                 <Button asChild size='lg'>
-                    <Link to='/docs/quickstart#quickstart'>{home.openQuickstart}</Link>
+                    <Link to='/docs/quickstart'>{home.openQuickstart}</Link>
                 </Button>
             </section>
         </div>

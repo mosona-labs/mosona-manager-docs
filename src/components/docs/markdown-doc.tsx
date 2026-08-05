@@ -52,14 +52,18 @@ function buildComponents(afterTitle?: ReactNode): Components {
     let titleSlotRendered = false;
 
     return {
-        h1: ({ children }) => {
+        h1: ({ children, id, ...props }) => {
             const showSlot = Boolean(afterTitle) && !titleSlotRendered;
             if (showSlot) {
                 titleSlotRendered = true;
             }
             return (
                 <>
-                    <h1 className='mb-6 scroll-mt-24 font-semibold text-3xl tracking-tight'>
+                    <h1
+                        id={id}
+                        {...props}
+                        className='mb-6 scroll-mt-24 font-semibold text-3xl tracking-tight'
+                    >
                         {children}
                     </h1>
                     {showSlot ? afterTitle : null}
