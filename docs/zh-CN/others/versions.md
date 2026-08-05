@@ -1,5 +1,17 @@
 # 版本记录
 
+## v0.1.10 (06/08/2026)
+
+Github: [0c13c4d...aacfbf7](https://github.com/mosona-labs/mosona-manager/compare/0c13c4d80dbb42d2ee4c73d664ef55391e23047e...aacfbf76041d50cd1324d886441104020fcc15ff)
+
+#### 修复
+
+1. 修复 SSH 模式下无法正确获取 ARM 设备 CPU 名称的问题
+
+#### 其他
+
+1. 使用 Runner 自动化版本构建
+
 ## v0.1.7 (14/07/2026)
 
 Github: [170aec1...2e0bc8f](https://github.com/mosona-labs/mosona-manager/compare/170aec125239d72c5aef0d83573b6536819f414e...2e0bc8fc2cdf953b20cd344e5aba88344e347459)
