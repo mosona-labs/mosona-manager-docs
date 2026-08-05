@@ -8,9 +8,16 @@ type DocsSidebarNavProps = {
     sections: DocNavSection[];
     activeSlug: string;
     className?: string;
+    /** Called after a nav link is activated (e.g. close a mobile drawer). */
+    onNavigate?: () => void;
 };
 
-export function DocsSidebarNav({ sections, activeSlug, className }: DocsSidebarNavProps) {
+export function DocsSidebarNav({
+    sections,
+    activeSlug,
+    className,
+    onNavigate,
+}: DocsSidebarNavProps) {
     return (
         <nav aria-label='Documentation' className={cn('text-sm', className)}>
             <div className='space-y-6'>
@@ -24,6 +31,7 @@ export function DocsSidebarNav({ sections, activeSlug, className }: DocsSidebarN
                                 <li key={item.href}>
                                     <Link
                                         to={item.href}
+                                        onClick={onNavigate}
                                         className={cn(
                                             'block rounded-md px-2 py-1.5 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground',
                                             item.slug === activeSlug &&

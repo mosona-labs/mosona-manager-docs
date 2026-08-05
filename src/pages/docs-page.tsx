@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import { Link, useParams } from 'react-router-dom';
 
+import { DocsMobileNav } from '@/components/docs/docs-mobile-nav';
 import { DocsSidebarNav } from '@/components/docs/docs-sidebar-nav';
 import { DocsToc } from '@/components/docs/docs-toc';
 import { MarkdownDoc } from '@/components/docs/markdown-doc';
@@ -22,10 +23,6 @@ export function DocsPage() {
     const docNavSections = useMemo(
         () => buildDocNavSections(locale, (title) => messages.docs.navSections[title] ?? title),
         [locale, messages.docs.navSections]
-    );
-    const docNav = useMemo(
-        () => docNavSections.flatMap((section) => section.items),
-        [docNavSections]
     );
 
     usePageSeo(
@@ -77,24 +74,15 @@ export function DocsPage() {
                     </div>
                 </aside>
 
-                <div className='min-w-0 py-10 lg:py-12'>
-                    <nav
-                        className='mb-6 flex flex-wrap gap-2 lg:hidden'
-                        aria-label='Documentation mobile'
-                    >
-                        {docNav.map((item) => (
-                            <Link
-                                key={item.href}
-                                to={item.href}
-                                className={cn(
-                                    'rounded-full border border-border px-3 py-1 text-xs',
-                                    item.slug === doc.slug && 'bg-foreground text-background'
-                                )}
-                            >
-                                {item.title}
-                            </Link>
-                        ))}
-                    </nav>
+                <div className='min-w-0 py-6 lg:py-12'>
+                    <DocsMobileNav
+                        key={doc.slug}
+                        sections={docNavSections}
+                        activeSlug={doc.slug}
+                        currentTitle={doc.title}
+                        openLabel={messages.docs.openSidebar}
+                        closeLabel={messages.docs.closeSidebar}
+                    />
                     <MarkdownDoc content={doc.content} afterTitle={afterTitle} />
                 </div>
 

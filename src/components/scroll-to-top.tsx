@@ -7,9 +7,11 @@ import { useLocation } from 'react-router-dom';
  * - With hash: scroll to the matching element once it exists
  */
 export function ScrollToTop() {
-    const { pathname, hash } = useLocation();
+    const location = useLocation();
 
     useLayoutEffect(() => {
+        const { hash } = location;
+
         if (!hash) {
             window.scrollTo({ top: 0, left: 0 });
             return;
@@ -42,7 +44,7 @@ export function ScrollToTop() {
         });
 
         return () => window.cancelAnimationFrame(frame);
-    }, [pathname, hash]);
+    }, [location]);
 
     return null;
 }

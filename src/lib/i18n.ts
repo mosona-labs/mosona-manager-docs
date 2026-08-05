@@ -49,6 +49,8 @@ export type Messages = {
         pageNotFoundDescription: string;
         backToDocs: string;
         onThisPage: string;
+        openSidebar: string;
+        closeSidebar: string;
         missingTranslationTitle: string;
         missingTranslationDescription: string;
         readOriginal: string;
