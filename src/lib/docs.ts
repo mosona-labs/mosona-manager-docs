@@ -2,7 +2,13 @@ import GithubSlugger from 'github-slugger';
 import YAML from 'yaml';
 
 import navYamlRaw from '../../docs/nav.yaml?raw';
-import { defaultLocale, isLocaleDirectoryName, type LocaleCode, localeCodes } from '@/lib/i18n';
+import {
+    defaultLocale,
+    isLocaleDirectoryName,
+    type LocaleCode,
+    localeCodes,
+    siteConfig,
+} from '@/lib/i18n';
 
 export type DocHeading = {
     id: string;
@@ -16,6 +22,8 @@ export type DocEntry = {
     content: string;
     headings: DocHeading[];
     locale: LocaleCode;
+    /** Path relative to the docs root, e.g. `index.md` or `zh-CN/quickstart.md`. */
+    sourcePath: string;
 };
 
 export type ResolvedDoc = DocEntry & {
@@ -63,8 +71,14 @@ function slugToHref(slug: string): string {
     return slug === '' ? '/docs' : `/docs/${slug}`;
 }
 
-function parseDocPath(path: string): { locale: LocaleCode; slug: string } | null {
-    const relative = path.startsWith(DOCS_ROOT) ? path.slice(DOCS_ROOT.length) : path;
+function toSourcePath(path: string): string {
+    return path.startsWith(DOCS_ROOT) ? path.slice(DOCS_ROOT.length) : path;
+}
+
+function parseDocPath(
+    path: string
+): { locale: LocaleCode; slug: string; sourcePath: string } | null {
+    const relative = toSourcePath(path);
     if (!relative.toLowerCase().endsWith('.md')) {
         return null;
     }
@@ -92,7 +106,27 @@ function parseDocPath(path: string): { locale: LocaleCode; slug: string } | null
         slug = '';
     }
 
-    return { locale, slug };
+    return { locale, slug, sourcePath: relative };
+}
+
+function trimSlashes(value: string): string {
+    return value.replace(/^\/+|\/+$/g, '');
+}
+
+/** Build a GitHub blob URL for a docs source file, or `undefined` when not configured. */
+export function getDocEditUrl(sourcePath: string): string | undefined {
+    const config = siteConfig.docsGithub;
+    const repository = config?.repository?.trim();
+    if (!repository || !sourcePath) {
+        return undefined;
+    }
+
+    const branch = trimSlashes(config.branch?.trim() || 'main');
+    const directory = trimSlashes(config.directory?.trim() || 'docs');
+    const base = repository.replace(/\/+$/g, '');
+    const filePath = trimSlashes(sourcePath);
+
+    return `${base}/blob/${branch}/${directory}/${filePath}`;
 }
 
 function titleFromMarkdown(content: string, slug: string): string {
@@ -148,6 +182,7 @@ function buildDocs(): DocEntry[] {
         entries.push({
             slug: parsed.slug,
             locale: parsed.locale,
+            sourcePath: parsed.sourcePath,
             title: titleFromMarkdown(content, parsed.slug),
             content,
             headings: extractHeadings(content),

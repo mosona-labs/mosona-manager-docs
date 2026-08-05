@@ -87,6 +87,7 @@
         "onThisPage": "On this page",
         "openSidebar": "Menu",
         "closeSidebar": "Close menu",
+        "editThisPage": "Edit this page",
         "missingTranslationTitle": "This page is not available in {language}",
         "missingTranslationDescription": "You are viewing the original version. You can switch to the original language, or open another available translation below.",
         "readOriginal": "Read original ({language})",
@@ -185,6 +186,7 @@
         "onThisPage": "本页目录",
         "openSidebar": "目录",
         "closeSidebar": "关闭目录",
+        "editThisPage": "编辑此页面",
         "missingTranslationTitle": "此页面暂无 {language} 译本",
         "missingTranslationDescription": "当前显示的是原始语言版本。你可以切换到原始语言阅读，或选择下方其他已有译本。",
         "readOriginal": "阅读原始版本（{language}）",
@@ -283,6 +285,7 @@
         "onThisPage": "本頁目錄",
         "openSidebar": "目錄",
         "closeSidebar": "關閉目錄",
+        "editThisPage": "編輯此頁面",
         "missingTranslationTitle": "此頁面暫無 {language} 譯本",
         "missingTranslationDescription": "目前顯示的是原始語言版本。你可以切換至原始語言閱讀，或選擇下方其他已有譯本。",
         "readOriginal": "閱讀原始版本（{language}）",
@@ -309,5 +312,10 @@
         "description": "面向團隊的伺服器監察與終端機管理：項目權限、即時監察、SSH 與 Mosona Agent、通知、API 與公開狀態頁。"
       }
     }
+  },
+  "docsGithub": {
+    "repository": "https://github.com/mosona-labs/mosona-manager-docs",
+    "branch": "main",
+    "directory": "docs"
   }
 }

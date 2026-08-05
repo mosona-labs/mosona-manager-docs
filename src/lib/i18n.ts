@@ -51,6 +51,7 @@ export type Messages = {
         onThisPage: string;
         openSidebar: string;
         closeSidebar: string;
+        editThisPage: string;
         missingTranslationTitle: string;
         missingTranslationDescription: string;
         readOriginal: string;
@@ -72,10 +73,21 @@ export type Messages = {
     };
 };
 
+export type DocsGithubConfig = {
+    /** GitHub repository URL, e.g. https://github.com/org/repo */
+    repository: string;
+    /** Branch name used in blob links. Defaults to `main`. */
+    branch?: string;
+    /** Path to the docs root inside the repo. Defaults to `docs`. */
+    directory?: string;
+};
+
 export type SiteConfig = {
     defaultLocale: LocaleCode;
     locales: Record<LocaleCode, LocaleMeta>;
     messages: Record<LocaleCode, Messages>;
+    /** Optional GitHub source for “Edit this page” links on docs. */
+    docsGithub?: DocsGithubConfig;
 };
 
 export const siteConfig = configJson as SiteConfig;
