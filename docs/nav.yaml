@@ -4,6 +4,9 @@ sections:
       - index
       - quickstart
       - manual-deploy
+  - title: Q&A
+    items:
+      - q&a/solutions-to-common-problems
   - title: Settings
     items:
       - settings-guide
