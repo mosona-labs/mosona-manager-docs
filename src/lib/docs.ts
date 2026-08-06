@@ -117,7 +117,7 @@ function trimSlashes(value: string): string {
 export function getDocEditUrl(sourcePath: string): string | undefined {
     const config = siteConfig.docsGithub;
     const repository = config?.repository?.trim();
-    if (!repository || !sourcePath) {
+    if (!config || !repository || !sourcePath) {
         return undefined;
     }
 
