@@ -1,5 +1,68 @@
 # Versions
 
+## v0.1.13 (16/08/2026)
+
+Github: [c850eb7...fc4e444](https://github.com/mosona-labs/mosona-manager/compare/c850eb75fba024359814e815731e5c0eaf02b065...fc4e44489da080103679c70040c61429975a21c3)
+
+#### Fix
+
+1. Distinguish users without an active team (`409 team_required`) from revoked team access, and defer team-scoped web UI requests until a team is active, preventing new instances from refresh-looping between `/` and `/create-team`.
+1. Stop passive-agent WebSocket reconnect attempts from submitting a full host information report before every retry. Startup and jittered periodic reports remain unchanged.
+1. Avoid rewriting unchanged server inventory and alert state rows, preventing dead-tuple growth during stable operation.
+1. Bound agent-information and alert update transactions, and keep agent connection shutdown outside the reinstall database transaction.
+
+#### Other
+
+1. Label Hub PostgreSQL sessions with `application_name=mosona-manager-hub` and default `POSTGRES_IDLE_IN_TRANSACTION_TIMEOUT` to `60s` (`0` disables it).
+1. Add a [PostgreSQL bloat recovery runbook](https://github.com/mosona-labs/mosona-manager/blob/v0.1.13/docs/postgres-bloat-recovery.md) for diagnosing stale transactions and reclaiming affected tables safely.
+
+## v0.1.12 (13/08/2026)
+
+Github: [aacfbf7...c850eb7](https://github.com/mosona-labs/mosona-manager/compare/aacfbf76041d50cd1324d886441104020fcc15ff...c850eb75fba024359814e815731e5c0eaf02b065)
+
+> This release re-encrypts stored SSH credentials at startup (legacy AES-CBC → versioned AES-GCM). Read the upgrade notes before applying to auto-updating or unattended instances. Do not roll back the image afterwards — builds prior to v0.1.11 cannot read the new credential format and may crash.
+
+#### Security
+
+1. End-to-end credential encryption — versioned AES-GCM envelopes bound to record context, with automatic migration of legacy CBC ciphertexts.
+1. Hardened master key handling — fail-closed (no silent regeneration when credentials exist), enforced file permissions/ownership, symlinks rejected.
+1. SSH host key pinning — new/edited servers record and enforce host keys; existing servers keep connecting (`trust_legacy_host_key`) and can be pinned by confirming on edit.
+1. Stronger auth & sessions — team sessions revoked on member removal; revoked team access is rejected instead of silently downgrading to viewer; admin self-deletion / self-demotion / last-admin removal rejected with re-authentication required.
+1. OIDC support with discovery, plus validation of OAuth identity subjects (rejects empty/0/whitespace subjects).
+1. Resource bounds everywhere — per-IP / per-team / global SSE limits for public preview streams; request/response size limits; upload limits; HTTP timeouts on the active-agent server.
+1. Scoped data access — server categories, alert upserts, and notification delivery are now scoped to the owning team; category deletion is atomic.
+1. Secret redaction — `smtp_password` and `captcha_secret` are redacted in admin settings responses.
+
+#### New Features
+
+1. Readiness / liveness health endpoints — `/health/ready` probes Postgres, Redis, and InfluxDB.
+1. Notification target pre-validation — `POST /api/team/notification/validate` validates targets before saving.
+1. OIDC protocol selection for OAuth providers.
+1. Generic webhook notifications with template allowlist and redirect policy.
+
+#### Fix
+
+1. Audit log writes are now queued & drained (bounded queue, graceful shutdown drain) instead of unbounded fire-and-forget goroutines.
+1. Cleaner server connection lifecycle — duplicate monitoring connections replaced, old connections awaited on edit/delete/reinstall, agent connections closed on access revocation.
+1. Passive-agent WebSocket shutdown is now permanent instead of silently reconnecting after server-initiated close.
+1. Database transactions now roll back on every exit path.
+1. Auto-renewals catch up — long-expired auto-renew servers advance to the next future period instead of one period per hour.
+1. Unified Redis password config (`REDIS_PASSWORD` / `REDIS_PASS`).
+1. Preserved legacy SSH connectivity during host-key pinning rollout.
+1. Alert configuration bounds enforced on both write paths and existing data.
+1. Consistent email sending and base-host / trust-proxy handling.
+
+#### Web
+
+1. Validate notification targets before saving (dedicated validation endpoint).
+1. Password re-authentication dialogs for privileged changes and protected user deletion.
+1. Team owner role / removal controls disabled in the member editor.
+1. SSH host key confirmation when adding or editing servers.
+1. Graceful handling of revoked team sessions (redirect instead of broken state).
+1. OAuth identity protocol configuration (OAuth 2.0 / OIDC).
+1. Edit & delete actions on dashboard server cards, exposed via a shared context menu with a touch-friendly kebab trigger. ([web#5](https://github.com/mosona-labs/mosona-manager-web/pull/5))
+1. Avatar source switched from gravatar.webp.se → www.gravatar.com. ([web#2](https://github.com/mosona-labs/mosona-manager-web/pull/2))
+
 ## v0.1.10 (06/08/2026)
 
 Github: [0c13c4d...aacfbf7](https://github.com/mosona-labs/mosona-manager/compare/0c13c4d80dbb42d2ee4c73d664ef55391e23047e...aacfbf76041d50cd1324d886441104020fcc15ff)

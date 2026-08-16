@@ -1,5 +1,68 @@
 # 版本記錄
 
+## v0.1.13 (16/08/2026)
+
+Github: [c850eb7...fc4e444](https://github.com/mosona-labs/mosona-manager/compare/c850eb75fba024359814e815731e5c0eaf02b065...fc4e44489da080103679c70040c61429975a21c3)
+
+#### 修正
+
+1. 區分「尚未擁有活躍團隊」(`409 team_required`) 與「團隊存取已被撤銷」的用戶，並在團隊就緒前延遲團隊範圍內的 Web UI 請求，避免新實例在 `/` 與 `/create-team` 之間重新整理循環。
+1. 停止被動 Agent 在每次 WebSocket 重連嘗試前提交完整主機資訊報告。啟動時與帶抖動的週期性報告保持不變。
+1. 避免在伺服器清單與警報狀態未變化時重複寫入，防止穩定運作期間產生大量死元組。
+1. 限制 Agent 資訊與警報更新事務的範圍，並將 Agent 連線關閉移出重裝資料庫事務。
+
+#### 其他
+
+1. 為 Hub 的 PostgreSQL 工作階段標記 `application_name=mosona-manager-hub`，並將 `POSTGRES_IDLE_IN_TRANSACTION_TIMEOUT` 預設設為 `60s`（`0` 表示停用）。
+1. 新增 [PostgreSQL 膨脹復原手冊](https://github.com/mosona-labs/mosona-manager/blob/v0.1.13/docs/postgres-bloat-recovery.md)，用於診斷滯留事務並安全回收受影響的資料表。
+
+## v0.1.12 (13/08/2026)
+
+Github: [aacfbf7...c850eb7](https://github.com/mosona-labs/mosona-manager/compare/aacfbf76041d50cd1324d886441104020fcc15ff...c850eb75fba024359814e815731e5c0eaf02b065)
+
+> 本版本會在啟動時重新加密已儲存的 SSH 憑據（舊版 AES-CBC → 帶版本的 AES-GCM）。套用至自動更新或無人值守實例前，請先閱讀升級說明。請勿回滾映像——v0.1.11 之前的建置無法讀取新憑據格式，可能導致崩潰。
+
+#### 保安
+
+1. 端到端憑據加密：使用綁定記錄上下文的帶版本 AES-GCM 封裝，並自動遷移舊版 CBC 密文。
+1. 強化主密鑰處理：失敗即關閉（憑據存在時不再靜默重新產生），強制檔案權限／擁有權，拒絕符號連結。
+1. SSH 主機金鑰固定：新增或編輯的伺服器會記錄並強制校驗主機金鑰；現有伺服器繼續連線（`trust_legacy_host_key`），可在編輯時確認以完成固定。
+1. 更強的認證與工作階段：成員被移除時撤銷團隊工作階段；拒絕已撤銷的團隊存取，而不再靜默降級為 viewer；拒絕管理員自刪／自降級／移除最後一名管理員，並要求重新認證。
+1. 支援帶探索的 OIDC，並校驗 OAuth 身份主體（拒絕空／0／純空白主體）。
+1. 全面資源限制：公開預覽串流的按 IP／按團隊／全域 SSE 限制；請求／回應大小限制；上傳限制；主動 Agent 服務的 HTTP 逾時。
+1. 作用域資料存取：伺服器分類、警報 upsert 與通知投遞現限定到所屬團隊；分類刪除為原子操作。
+1. 密鑰脫敏：管理設定回應中會脫敏 `smtp_password` 與 `captcha_secret`。
+
+#### 新功能
+
+1. 就緒／存活健康檢查端點：`/health/ready` 探測 Postgres、Redis 與 InfluxDB。
+1. 通知目標預校驗：`POST /api/team/notification/validate` 在儲存前校驗目標。
+1. 為 OAuth 提供方增加 OIDC 協定選擇。
+1. 通用 Webhook 通知，含範本白名單與重新導向策略。
+
+#### 修正
+
+1. 稽核日誌寫入改為有界佇列並在優雅關閉時排空，不再使用無界 fire-and-forget goroutine。
+1. 更清晰的伺服器連線生命週期：取代重複的監控連線，編輯／刪除／重裝時等待舊連線結束，存取撤銷時關閉 Agent 連線。
+1. 被動 Agent 的 WebSocket 關閉現為永久關閉，不再在服務端主動關閉後靜默重連。
+1. 資料庫事務在所有退出路徑上均會回滾。
+1. 自動續期追趕：長期過期的自動續期伺服器會推進到下一個未來週期，而不再每小時只推進一個週期。
+1. 統一 Redis 密碼設定（`REDIS_PASSWORD` / `REDIS_PASS`）。
+1. 在主機金鑰固定上線期間保留舊版 SSH 連通性。
+1. 在寫入路徑與既有資料上強制警報設定邊界。
+1. 統一郵件發送以及 base-host / trust-proxy 處理。
+
+#### Web
+
+1. 儲存前校驗通知目標（獨立校驗端點）。
+1. 特權變更與受保護用戶刪除的密碼重新認證對話框。
+1. 成員編輯器中停用團隊擁有者角色／移除控制項。
+1. 新增或編輯伺服器時確認 SSH 主機金鑰。
+1. 優雅處理已撤銷的團隊工作階段（重新導向而非損壞狀態）。
+1. OAuth 身份協定設定（OAuth 2.0 / OIDC）。
+1. 儀表板伺服器卡片增加編輯與刪除操作，透過帶觸控友善 kebab 觸發器的共用內容選單公開。（[web#5](https://github.com/mosona-labs/mosona-manager-web/pull/5)）
+1. 頭像來源由 gravatar.webp.se 切換為 www.gravatar.com。（[web#2](https://github.com/mosona-labs/mosona-manager-web/pull/2)）
+
 ## v0.1.10 (06/08/2026)
 
 Github: [0c13c4d...aacfbf7](https://github.com/mosona-labs/mosona-manager/compare/0c13c4d80dbb42d2ee4c73d664ef55391e23047e...aacfbf76041d50cd1324d886441104020fcc15ff)
