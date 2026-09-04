@@ -1,5 +1,75 @@
 # Versions
 
+## v0.1.16 (04/09/2026)
+
+Github: [3ef7752...5b9fcc1](https://github.com/mosona-labs/mosona-manager/compare/3ef7752d57e1a30d33343784ebaa2d74deff18d2...5b9fcc1f7f5df04be20a26205d36aef5e84138a1)
+
+#### Fix
+
+1. Fix server alert notifications never firing: the batched InfluxDB alert queries wrapped a single duration group in `union(tables: [branch0])`, which Flux rejects ("union must have at least two streams as input"), so every alert evaluation cycle skipped all rules whenever a team's rules for an item shared one lookback duration (the default setup). Single-group queries now emit the branch pipeline directly.
+1. Keep the valid disk rows when `df` partially fails during SSH status collection (for example a stale FUSE mount makes `df` list every filesystem and then exit non-zero): the disk sample now uses the rows that parsed instead of discarding the whole snapshot, and only falls back to the last cached sample when `df` times out or produces no valid rows at all.
+
+#### Web
+
+1. Some small design changes.
+
+## v0.1.15 (30/08/2026)
+
+Github: [3983bdf...3ef7752](https://github.com/mosona-labs/mosona-manager/compare/3983bdf8eea34558239752c4d6c81b472a4671f6...3ef7752d57e1a30d33343784ebaa2d74deff18d2)
+
+> This release authenticates the Active Agent terminal handshake (protocol v2: the reply is signed with the agent's Ed25519 identity key and pinned by the Hub, so a man-in-the-middle can no longer impersonate an agent terminal) and hardens Passive terminal sessions (bound to their server, claimed atomically, session IDs moved out of URLs). There is no downgrade path — read the upgrade notes before applying to auto-updating or unattended instances, and upgrade Active and Passive Agents before v0.1.17 (the legacy handshake is removed then).
+
+#### Security
+
+1. Encrypt Active Agent long-term private keys at rest with the versioned AES-GCM envelope bound to the Server record; runtime connections and exports reject plaintext or ciphertext copied from another Server.
+1. Enforce uniqueness for non-empty Agent UIDs so an authenticated Passive Agent identity resolves to exactly one Server; upgrades fail closed on duplicates, and team imports preflight conflicts with a Server-specific 409 instead of an opaque database error.
+1. Identify the affected Server or shared SSH Key when a team export hits an unreadable credential: exports skip unreadable Servers and Servers that depend on a skipped Key by default and record them in the response and encrypted bundle; `skip_unreadable_servers: false` requests a strict, all-or-nothing export.
+1. Bind Passive terminal sessions to their target server, consume them atomically on first claim, generate identifiers as random UUID v4, and require terminal-enabled installed Agents, preventing cross-team or repeated claims; keep session identifiers out of URLs on the new endpoint, reducing reverse-proxy and WAF log exposure.
+1. Sign and verify the Active Agent handshake reply over the full transcript, pin the identity key with an atomic compare-and-set, bind session keys to the transcript, confirm with mutually verified finished messages, apply a 15-second deadline, fail closed on any verification error, and refuse downgrade to the legacy handshake once pinned to v2.
+1. Validate agent `public_key` values (PEM format and Ed25519 key length) during team import, normalizing and re-encoding them before storage.
+
+#### New Features
+
+1. Optional per-server `public_visible` flag (default visible) that hides a server from the public status page only — team dashboards, monitoring, and terminals are untouched. Set it on add/edit; team export/import bundles carry it, and older bundles without the field import as visible.
+1. `protocol_version` field in team export/import bundles, backward compatible with older archives: unpinned Active Agents keep an explicit legacy version during the upgrade window, pinned identities import as v2.
+1. Add `docs/testing.md` describing the environment variables needed to run the test suite.
+
+#### Fix
+
+1. Use random UUID v4 identities and fail closed if generation fails during Passive Agent enrollment or Active Server creation, instead of risking a predictable or all-zero Agent identity.
+1. Stop the Agent process from exiting via `log.Fatalln` when a status snapshot or encode fails on an authenticated connection; close the connection instead, and reconnect the monitor when a frame fails decryption instead of silently desynchronizing the stream.
+1. Remove finished connection workers from the pool so stopped or mismatched servers leave no stale entries, stop retry loops when the agent row is missing instead of logging an error every minute (SSH servers included), and reuse the existing agent identity when rerunning the installer.
+
+## v0.1.14 (22/08/2026)
+
+Github: [fc4e444...3983bdf](https://github.com/mosona-labs/mosona-manager/compare/fc4e44489da080103679c70040c61429975a21c3...3983bdf8eea34558239752c4d6c81b472a4671f6)
+
+> This release reduces Hub load from live monitoring and alerting on larger fleets, and switches the logs API to cursor-based time-range queries. `GET /api/v1/logs` and `GET /api/admin/logs` no longer support offset pagination (`page` > 1 returns 400; responses return `next_cursor` / `has_more` instead of `total`), and log queries default to the last 30 days (message search is limited to a 30-day window; maximum span 365 days).
+
+#### New Features
+
+1. Optional RFC3339 `start`/`end` filters on team and admin log list endpoints, with cursor-based paging (`cursor`, `next_cursor`, `has_more`).
+
+#### Performance
+
+1. Share one monitor snapshot per team across SSE subscribers (refresh every 3s, 8s query timeout, 64 concurrent Influx loads) instead of querying InfluxDB once per open dashboard.
+1. Queue and batch server-status writes to InfluxDB (10k-point queue, 500-point batches, 1s flush), retry a failed batch once, drop the oldest points on overflow, and drain the queue on shutdown alongside audit logs.
+1. Batch alert observation queries (64 servers at a time, grouped by metric and `for_duration`) and pre-aggregate windows instead of one Influx query per server/rule.
+1. Parallelize admin-dashboard Influx queries (record counts and system usage) with a 15s context timeout.
+
+#### Fix
+
+1. Reject parent path segments (`..`) in `SafeJoinUnderRoot`, including backslash-separated paths, so static-file joins cannot walk via traversal segments that previously cleaned back under the root.
+1. Validate admin list pagination (`page`/`size`) against shared bounds (default 1/20, max 100000/1000) and return 400 on invalid values instead of coercing them.
+1. Escape `LIKE` wildcards in admin user/team search, match numeric IDs exactly, and list teams without requiring a member join so empty teams appear in the admin list.
+
+#### Web
+
+1. Virtualize dashboard server cards and throttle SSE snapshot commits so large fleets stay interactive while status updates stream.
+1. Replace log page numbers with previous/next cursor paging and a time-range selector (24h / 7d / 30d / 90d / 365d); message search clamps the range to 30 days.
+1. Render agent-mode servers on the terminal page when SSH/OS fields are absent instead of throwing on null address/username.
+1. Correct monitor chart downsampling so longer ranges (7d / 30d / 180d / 365d) keep a sensible number of points instead of collapsing or over-aggregating.
+
 ## v0.1.13 (16/08/2026)
 
 Github: [c850eb7...fc4e444](https://github.com/mosona-labs/mosona-manager/compare/c850eb75fba024359814e815731e5c0eaf02b065...fc4e44489da080103679c70040c61429975a21c3)
